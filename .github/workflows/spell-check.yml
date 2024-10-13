@@ -1,0 +1,18 @@
+name: Spellcheck
+
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  build:
+    name: Spellcheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install prerequisites
+        run: sudo pip install codespell==2.0.0
+
+      - name: Spell check
+        run: codespell
