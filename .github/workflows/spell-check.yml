@@ -12,4 +12,4 @@ jobs:
       - uses: codespell-project/actions-codespell@master
         with:
           check_filenames: true
-          args: "--ignore-file .codespellignore"
+          args: "--skip="*/dist/*,*/dist-typings/*,yarn.lock"
