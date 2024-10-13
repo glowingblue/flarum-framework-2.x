@@ -1,27 +1,14 @@
-name: Spellcheck
-
-on:
-  push:
-  pull_request:
-
+name: Codespell
+on: [push, pull_request]
+permissions: {}
 jobs:
-  build:
-    name: Spellcheck
+  codespell:
+    name: Check for spelling errors
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: pip cache
-        uses: actions/cache@v4
+      - uses: actions/checkout@v4
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-
-      - name: Install prerequisites
-        run: sudo pip install -r ./.codespell/requirements.txt
-
-      - name: Spell check
-        run: codespell --config=./.codespell/.codespellrc
+          persist-credentials: false
+      - uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true

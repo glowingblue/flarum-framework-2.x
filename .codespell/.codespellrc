@@ -1,4 +1,0 @@
-[codespell]
-quiet-level = 2
-count =
-ignore-words = ./.codespell/wordlist.txt
