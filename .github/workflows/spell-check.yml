@@ -12,4 +12,3 @@ jobs:
       - uses: codespell-project/actions-codespell@master
         with:
           check_filenames: true
-          args: "--skip dist,dist-typings"
