@@ -11,4 +11,4 @@ jobs:
           persist-credentials: false
       - uses: codespell-project/actions-codespell@master
         with:
-          skip: yarn.lock
+          skip: yarn.lock,./extensions/*/js/dist/*.js,./extensions/*/js/dist/*.js.map,./framework/core/js/dist/*.js.map,./framework/core/js/dist/*.js
