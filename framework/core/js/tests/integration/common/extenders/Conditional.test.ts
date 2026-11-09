@@ -7,6 +7,7 @@ beforeAll(() => bootstrapForum());
 
 afterEach(() => {
   delete flarum.extensions['acme-other'];
+  delete flarum.extensions['acme-another'];
 });
 
 describe('Conditional extender', () => {
@@ -75,5 +76,51 @@ describe('Conditional extender', () => {
     app.boot();
 
     expect(app.routes).toHaveProperty('disabled');
+  });
+
+  test('extenders apply when all extensions are enabled', () => {
+    flarum.extensions['acme-other'] = {};
+    flarum.extensions['acme-another'] = {};
+
+    app.bootExtensions({
+      test: {
+        extend: [new Extend.Conditional().whenExtensionsEnabled(['acme-other', 'acme-another'], routes('allEnabled'))],
+      },
+    });
+
+    app.boot();
+
+    expect(app.routes).toHaveProperty('allEnabled');
+  });
+
+  test('extenders apply when all extensions are disabled', () => {
+    app.bootExtensions({
+      test: {
+        extend: [new Extend.Conditional().whenExtensionsDisabled(['acme-other', 'acme-another'], routes('allDisabled'))],
+      },
+    });
+
+    app.boot();
+
+    expect(app.routes).toHaveProperty('allDisabled');
+  });
+
+  test('extenders do not apply when only some extensions are enabled', () => {
+    flarum.extensions['acme-other'] = {};
+
+    app.bootExtensions({
+      test: {
+        extend: [
+          new Extend.Conditional()
+            .whenExtensionsEnabled(['acme-other', 'acme-another'], routes('someEnabled'))
+            .whenExtensionsDisabled(['acme-other', 'acme-another'], routes('someDisabled')),
+        ],
+      },
+    });
+
+    app.boot();
+
+    expect(app.routes).not.toHaveProperty('someEnabled');
+    expect(app.routes).not.toHaveProperty('someDisabled');
   });
 });
